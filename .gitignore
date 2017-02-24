@@ -5,3 +5,5 @@
 /Talk.Extensions/Talk.Extensions.nuspec
 /Talk.Extensions/Talk.Extensions.1.0.nupkg
 /.vs/Talk/v14/.suo
+/Talk.Linq.Extensions/obj
+/Talk.Linq.Extensions/bin

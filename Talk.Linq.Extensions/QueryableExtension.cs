@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Talk.Extensions
+namespace Talk.Linq.Extensions
 {
     public static class QueryableExtension
     {
