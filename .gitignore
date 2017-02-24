@@ -1,3 +1,5 @@
 /packages
 /Talk.Extensions/bin
 /Talk.Extensions/obj
+/Talk.Extensions/NuGet.exe
+/Talk.Extensions/Talk.Extensions.nuspec
