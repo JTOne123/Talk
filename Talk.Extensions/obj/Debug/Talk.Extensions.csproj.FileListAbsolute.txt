@@ -1,0 +1,6 @@
+E:\Code\Study\Talk\Talk.Extensions\bin\Debug\Talk.Extensions.dll
+E:\Code\Study\Talk\Talk.Extensions\bin\Debug\Talk.Extensions.pdb
+E:\Code\Study\Talk\Talk.Extensions\obj\Debug\Talk.Extensions.csprojResolveAssemblyReference.cache
+E:\Code\Study\Talk\Talk.Extensions\obj\Debug\Talk.Extensions.dll
+E:\Code\Study\Talk\Talk.Extensions\obj\Debug\Talk.Extensions.pdb
+E:\Code\Study\Talk\Talk.Extensions\bin\Debug\System.Linq.Dynamic.dll
