@@ -20,7 +20,12 @@ namespace Talk.AutoMap.Extensions
                     };
             }
         }
-        public static void Init(IEnumerable<Type> _type)
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="_type"></param>
+        public static void Initialize(IEnumerable<Type> _type)
         {
             var types = _type.Where(type => AttributeTypes.Any(t => type.IsDefined(t)) || type.IsDefined(typeof(AutoMapProfileAttribute)));
             AutoMapperHelper.CreateMap(types, AttributeTypes);

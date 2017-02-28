@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Talk.AutoMap.Extensions")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("AutoMapExtensions")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Talk.AutoMap.Extensions")]
+[assembly: AssemblyProduct("Talk")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

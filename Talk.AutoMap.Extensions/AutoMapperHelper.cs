@@ -9,7 +9,7 @@ using Talk.Extensions;
 
 namespace Talk.AutoMap.Extensions
 {
-    public static class AutoMapperHelper
+    internal static class AutoMapperHelper
     {
         internal static void CreateMap(IEnumerable<Type> types, Type[] AttributeTypes)
         {
