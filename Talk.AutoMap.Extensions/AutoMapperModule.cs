@@ -13,12 +13,16 @@ namespace Talk.AutoMap.Extensions
         {
             get
             {
-                return new Type[] { typeof(AutoMapAttribute), typeof(AutoMapFromAttribute), typeof(AutoMapToAttribute) };
+                return new Type[] {
+                    typeof(AutoMapAttribute),
+                    typeof(AutoMapFromAttribute),
+                    typeof(AutoMapToAttribute)
+                    };
             }
         }
         public static void Init(IEnumerable<Type> _type)
         {
-            var types = _type.Where(type => AttributeTypes.Any(t => type.IsDefined(t)));
+            var types = _type.Where(type => AttributeTypes.Any(t => type.IsDefined(t)) || type.IsDefined(typeof(AutoMapProfileAttribute)));
             AutoMapperHelper.CreateMap(types, AttributeTypes);
         }
     }

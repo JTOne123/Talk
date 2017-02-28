@@ -10,15 +10,21 @@ using Talk.Extensions;
 namespace Talk.AutoMap.Extensions
 {
     public static class AutoMapperHelper
-    {       
+    {
         internal static void CreateMap(IEnumerable<Type> types, Type[] AttributeTypes)
         {
             Mapper.Initialize(c =>
             {
                 foreach (var type in types)
                 {
+                    if (type.GetCustomAttributes<AutoMapProfileAttribute>().Any())
+                    {
+                        c.AddProfile(type);
+                        continue;
+                    }
                     foreach (Type TAttribute in AttributeTypes)
                     {
+
                         foreach (AutoMapAttribute autoMapToAttribute in type.GetCustomAttributes(TAttribute))
                         {
                             if (autoMapToAttribute.TargetTypes.IsNullOrEmpty())

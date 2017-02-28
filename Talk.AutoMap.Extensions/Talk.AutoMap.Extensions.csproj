@@ -50,6 +50,7 @@
     <Compile Include="AutoMapFromAttribute.cs" />
     <Compile Include="AutoMapperHelper.cs" />
     <Compile Include="AutoMapperModule.cs" />
+    <Compile Include="AutoMapProfileAttribute.cs" />
     <Compile Include="AutoMapToAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
