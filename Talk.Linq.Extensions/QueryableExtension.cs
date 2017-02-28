@@ -1,13 +1,15 @@
-﻿using System;
+﻿using AutoMapper.QueryableExtensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Talk.Linq.Extensions
 {
+    /// <summary>
+    /// IQueryable扩展
+    /// </summary>
     public static class QueryableExtension
     {
         /// <summary>
@@ -38,28 +40,27 @@ namespace Talk.Linq.Extensions
             return query.Skip(skipCount).Take(maxResultCount);
         }
 
-        ///// <summary>
-        ///// 需要通过guget引用 AutoMapper [Install-Package AutoMapper -Version 4.2.1]
-        ///// 导入 AutoMapper.QueryableExtensions 命名空间
-        ///// 需要在 Global.asax 配置映射 Mapper.CreateMap<T, DTO>();
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="query"></param>
-        ///// <returns></returns>
-        //public static IQueryable<T> Select<T>(this IQueryable query)
-        //{
-        //    if (query == null)
-        //        throw new ArgumentNullException("query");
-        //    return query.ProjectTo<T>();
-        //}
-
-
-        /// <summary>
-        /// 需要通过guget下载System.Linq.Dynamic [Install-Package System.Linq.Dynamic]
-        /// 导入System.Linq.Dynamic命名空间
+        /// <summary>        
+        /// 需要在Dto做特性映射，如：[AutoMap(typeof(MyClass2))]
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
+        /// <returns></returns>
+        public static IQueryable<T> Select<T>(this IQueryable query)
+        {
+            if (query == null)
+                throw new ArgumentNullException("query");
+            return query.ProjectTo<T>();
+        }
+
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="ordering">排序字符串，如：OrderBy("id desc,name ase")</param>
+        /// <param name="values"></param>
         /// <returns></returns>
         public static IQueryable<T> OrderBy<T>(this IQueryable<T> query, string ordering, params object[] values)
         {
@@ -94,7 +95,7 @@ namespace Talk.Linq.Extensions
     }
 
     #region ParameterRebinder
-    public class ParameterRebinder : ExpressionVisitor
+    internal class ParameterRebinder : ExpressionVisitor
     {
         private readonly Dictionary<ParameterExpression, ParameterExpression> map;
 

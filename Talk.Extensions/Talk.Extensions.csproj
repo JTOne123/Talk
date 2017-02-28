@@ -45,9 +45,8 @@
   <ItemGroup>
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="EncryptDecryptExtension.cs" />
-    <Compile Include="EnumerableExtension.cs" />
-    <Compile Include="EnumExtension.cs" />
     <Compile Include="CollectionExtension.cs" />
+    <Compile Include="EnumExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtension.cs" />
   </ItemGroup>

@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Talk.Extensions
+namespace Talk.Linq.Extensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class EnumerableExtension
     {
         /// <summary>
@@ -104,46 +104,96 @@ namespace Talk.Extensions
         }
 
         /// <summary>
-        /// 随机取 Enumerable 中的一个值
+        /// 去重
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
         /// <param name="source"></param>
-        /// <param name="random"></param>
+        /// <param name="keySelector"></param>
         /// <returns></returns>
-        public static T RandomEnumerableValue<T>(this IEnumerable<T> source, Random random)
+        public static IEnumerable<TSource> Distinct<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (random == null)
-                throw new ArgumentNullException("random");
-
-            if (source is ICollection)//如果实现了ICollection接口
+            //return collection.GroupBy(groupFunc).Select(group => group.First());
+            HashSet<TKey> seenKeys = new HashSet<TKey>();
+            foreach (TSource element in source)
             {
-                ICollection collection = source as ICollection;
-                int count = collection.Count;//获取总数，用来取合理随机数
-                if (count == 0)
+                if (seenKeys.Add(keySelector(element)))
                 {
-                    throw new Exception("IEnumerable没有数据");
+                    yield return element;
                 }
-                int index = random.Next(count);
-                return source.ElementAt(index);//直接取Enumerable中的值
-            }
-            using (IEnumerator<T> iterator = source.GetEnumerator())
-            {
-                if (!iterator.MoveNext())
-                {
-                    throw new Exception("IEnumerable没有数据");
-                }
-                int count = 1;
-                T current = iterator.Current;
-                while (iterator.MoveNext())
-                {
-                    count++;
-                    if (random.Next(count) == 0) //看似不够随机，其实每个取值的概率都是一样的。（第n个值取值概率的1/n）
-                        current = iterator.Current;
-                }
-                return current;
             }
         }
+
+        /// <summary>
+        /// 是否包含
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="selectFunc"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool Contains<T, TKey>(this IEnumerable<T> collection, Func<T, TKey> selectFunc, TKey value)
+        {
+            return collection.Select(selectFunc).Contains(value);
+        }
+
+        /// <summary>
+        /// 比较两个集合中的每个元素是否都一样
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="source1"></param>
+        /// <param name="source2"></param>
+        /// <returns></returns>
+        public static bool ItmesEquals<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2)
+        {
+            return (source1.Count() == source2.Count() && !source1.Any(t => !source2.Contains(t)));
+        }
+
+        #region MyRegion
+        ///// <summary>
+        ///// 随机取 Enumerable 中的一个值
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="source"></param>
+        ///// <param name="random"></param>
+        ///// <returns></returns>
+        //public static T RandomEnumerableValue<T>(this IEnumerable<T> source, Random random)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException("source");
+        //    if (random == null)
+        //        throw new ArgumentNullException("random");
+
+        //    if (source is ICollection)//如果实现了ICollection接口
+        //    {
+        //        ICollection collection = source as ICollection;
+        //        int count = collection.Count;//获取总数，用来取合理随机数
+        //        if (count == 0)
+        //        {
+        //            throw new Exception("IEnumerable没有数据");
+        //        }
+        //        int index = random.Next(count);
+        //        return source.ElementAt(index);//直接取Enumerable中的值
+        //    }
+        //    using (IEnumerator<T> iterator = source.GetEnumerator())
+        //    {
+        //        if (!iterator.MoveNext())
+        //        {
+        //            throw new Exception("IEnumerable没有数据");
+        //        }
+        //        int count = 1;
+        //        T current = iterator.Current;
+        //        while (iterator.MoveNext())
+        //        {
+        //            count++;
+        //            if (random.Next(count) == 0) //看似不够随机，其实每个取值的概率都是一样的。（第n个值取值概率的1/n）
+        //                current = iterator.Current;
+        //        }
+        //        return current;
+        //    }
+        //} 
+        #endregion
     }
 }
