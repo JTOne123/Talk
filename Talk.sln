@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talk.Linq.Extensions", "Tal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talk.AutoMap.Extensions", "Talk.AutoMap.Extensions\Talk.AutoMap.Extensions.csproj", "{9A2390BD-52B4-42E5-9140-975F16E70B9B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E89920F0-6221-48A7-9E1C-F9B52A1D91D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talk.AutoMap.Extensions.Tests", "Talk.AutoMap.Extensions.Tests\Talk.AutoMap.Extensions.Tests.csproj", "{D8DAEF0D-55CE-4AB9-9FD7-B3F85575D1BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +31,15 @@ Global
 		{9A2390BD-52B4-42E5-9140-975F16E70B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A2390BD-52B4-42E5-9140-975F16E70B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A2390BD-52B4-42E5-9140-975F16E70B9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8DAEF0D-55CE-4AB9-9FD7-B3F85575D1BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8DAEF0D-55CE-4AB9-9FD7-B3F85575D1BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8DAEF0D-55CE-4AB9-9FD7-B3F85575D1BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8DAEF0D-55CE-4AB9-9FD7-B3F85575D1BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D8DAEF0D-55CE-4AB9-9FD7-B3F85575D1BE} = {E89920F0-6221-48A7-9E1C-F9B52A1D91D3}
 	EndGlobalSection
 EndGlobal

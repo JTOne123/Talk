@@ -18,3 +18,7 @@
 /Talk.Extensions/Talk.Extensions.1.0.1.nupkg
 /Talk.Linq.Extensions/Talk.Linq.Extensions.1.0.0.nupkg
 /Talk.Linq.Extensions/Talk.Linq.Extensions.1.0.1.nupkg
+/UnitTestTalk/obj
+/UnitTestTalk/bin
+/Talk.AutoMap.Extensions.Tests/bin
+/Talk.AutoMap.Extensions.Tests/obj
