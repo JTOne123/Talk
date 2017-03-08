@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Talk.AutoMap.Extensions</name>
+    </assembly>
+    <members>
+        <member name="M:Talk.AutoMap.Extensions.AutoMapperModule.Initialize(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            初始化
+            </summary>
+            <param name="_type"></param>
+        </member>
+    </members>
+</doc>

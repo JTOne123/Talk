@@ -1,0 +1,8 @@
+E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.AutoMap.Extensions.Tests\bin\Debug\xunit.runner.visualstudio.testadapter.dll
+E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.AutoMap.Extensions.Tests\bin\Debug\xunit.runner.utility.net35.dll
+E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.AutoMap.Extensions.Tests\bin\Debug\xunit.runner.reporters.net452.dll
+E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.AutoMap.Extensions.Tests\bin\Debug\xunit.abstractions.dll
+E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.AutoMap.Extensions.Tests\bin\Debug\Talk.AutoMap.Extensions.Tests.dll
+E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.AutoMap.Extensions.Tests\bin\Debug\Talk.AutoMap.Extensions.Tests.pdb
+E:\Code\Study\Talk\.vs\Talk\11964\i\Talk.AutoMap.Extensions.Tests\Debug\Talk.AutoMap.Extensions.Tests.dll
+E:\Code\Study\Talk\.vs\Talk\11964\i\Talk.AutoMap.Extensions.Tests\Debug\Talk.AutoMap.Extensions.Tests.pdb

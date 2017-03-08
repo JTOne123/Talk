@@ -1,0 +1,5 @@
+E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.AutoMap.Extensions\bin\Debug\Talk.AutoMap.Extensions.dll
+E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.AutoMap.Extensions\bin\Debug\Talk.AutoMap.Extensions.pdb
+E:\Code\Study\Talk\.vs\Talk\11964\i\Talk.AutoMap.Extensions\Debug\Talk.AutoMap.Extensions.csprojResolveAssemblyReference.cache
+E:\Code\Study\Talk\.vs\Talk\11964\i\Talk.AutoMap.Extensions\Debug\Talk.AutoMap.Extensions.dll
+E:\Code\Study\Talk\.vs\Talk\11964\i\Talk.AutoMap.Extensions\Debug\Talk.AutoMap.Extensions.pdb
