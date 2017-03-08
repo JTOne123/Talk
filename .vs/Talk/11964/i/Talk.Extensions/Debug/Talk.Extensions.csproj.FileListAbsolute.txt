@@ -1,5 +1,0 @@
-E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.Extensions\bin\Debug\Talk.Extensions.dll
-E:\Code\Study\Talk\.vs\Talk\11964\b\Talk.Extensions\bin\Debug\Talk.Extensions.pdb
-E:\Code\Study\Talk\.vs\Talk\11964\i\Talk.Extensions\Debug\Talk.Extensions.csprojResolveAssemblyReference.cache
-E:\Code\Study\Talk\.vs\Talk\11964\i\Talk.Extensions\Debug\Talk.Extensions.dll
-E:\Code\Study\Talk\.vs\Talk\11964\i\Talk.Extensions\Debug\Talk.Extensions.pdb
