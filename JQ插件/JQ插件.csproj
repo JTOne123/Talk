@@ -74,6 +74,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="jquery.dataTools.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
