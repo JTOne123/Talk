@@ -25,3 +25,10 @@
 /.vs/Talk/v15/.suo
 /JQ插件/obj
 /JQ插件/bin
+/Talk.Cache.Tests/obj
+/Talk.Cache.Tests/bin
+/Talk.Cache/obj
+/Talk.Cache/bin
+/Talk/bin
+/Talk/obj
+/.vs
