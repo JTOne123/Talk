@@ -8,49 +8,40 @@ namespace Talk.Cache.Tests
     {
 
         [Fact]
-        public void test()
+        public void Test_string()
         {
-            //  Assert.Equal(obj2.Name, "张三"); 
-            EasyCache<string> a = new EasyCache<string>();
-            a.AddData("k", new CacheData<string>()
-            {
-                ExpirationTime = DateTime.Now.AddDays(1),
-                Data = "aaa",
-            });
-
-            a.AddData("j", new CacheData<string>()
-            {
-                ExpirationTime = DateTime.Now.AddDays(1),
-                Data = "ccc",
-            });
-            var vvv = a.GetData("k");
-            Assert.Equal(a.GetData("k")?.Data, "aaa");
-            Assert.Equal(a.GetData("j")?.Data, "ccc");
-
-            EasyCache<string> z = new EasyCache<string>();
-            Assert.Equal(z.GetData("k")?.Data, "aaa");
-
-            EasyCache<int> b = new EasyCache<int>();
-            b.AddData("b", new CacheData<int>()
-            {
-                ExpirationTime = DateTime.Now.AddDays(1),
-                Data = 111,
-            });
-
-            Assert.Equal(b.GetData("b")?.Data, 111);
-
-            EasyCache<int> index = new EasyCache<int>();
-            index.AddData("v", new CacheData<int>()
-            {
-                ExpirationTime = DateTime.Now.AddDays(1),
-                Data = 1,
-            });
-
-            ExecuteIndex e = new ExecuteIndex("ind", DateTime.Now.AddDays(2));
-            Assert.Equal(e.GetIndex(), 1);
-            Assert.Equal(e.GetIndex(), 2);
-            Assert.Equal(e.GetIndex(), 3);
+            var time = DateTime.Now.AddMilliseconds(60) - DateTime.Now;
+            EasyCache<string> str = new EasyCache<string>("k", time);
+            str.AddData("aaa");
+            Assert.Equal(str.GetData()?.Data, "aaa"); 
         }
 
+        [Fact]
+        public void Test_Obj()
+        {
+            var time = DateTime.Now.AddMilliseconds(60) - DateTime.Now;
+            EasyCache<Order> obj = new EasyCache<Order>("k", time);
+            obj.AddData(new Order() { Code = "123" });
+            Assert.Equal(obj.GetData()?.Data.Code, "123");
+        }
+
+        [Fact]
+        public void Test_ExecuteNum()
+        {
+            var time = DateTime.Now.AddSeconds(5) - DateTime.Now;
+            ExecuteNum e = new ExecuteNum("ind", time);
+            //for (int i = 0; i < 50; i++)
+            //{
+            //    var num = e.GetNum();
+            //}
+            Assert.Equal(e.GetNum(), 1);
+            Assert.Equal(e.GetNum(), 2);
+            Assert.Equal(e.GetNum(), 3);
+        }
+
+    }
+    public class Order
+    {
+        public string Code { get; set; }
     }
 }
