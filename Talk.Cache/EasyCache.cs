@@ -8,7 +8,7 @@ namespace Talk.Cache
     /// 缓存对象
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class CacheData<T>
+    internal class CacheData<T>
     {
         /// <summary>
         /// 过期时间
@@ -65,7 +65,7 @@ namespace Talk.Cache
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <returns>返回false代表修改失败</returns>
-        public bool ModifyData(string key, T data)
+        internal bool ModifyData(string key, T data)
         {
             //查询出过期数据
             var keys = list.Where(t => t.Value.ExpirationTime <= DateTime.Now).Select(t => t.Key).ToArray();
@@ -83,11 +83,32 @@ namespace Talk.Cache
         }
 
         /// <summary>
+        ///获取存储对象
+        /// 如果没有取到 则返回default(T)
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public T GetData()
+        {
+            var keys = list.Where(t => t.Value.ExpirationTime <= DateTime.Now).Select(t => t.Key).ToArray();
+            lock (lockObj)
+            {
+                foreach (var k in keys)
+                {
+                    list.Remove(k);
+                }
+                if (list.ContainsKey(_key))
+                    return list[_key].Data;
+                return default(T);
+            }
+        }
+
+        /// <summary>
         /// 如果没有取到 则返回null
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public CacheData<T> GetData()
+        internal CacheData<T> GetCache()
         {
             var keys = list.Where(t => t.Value.ExpirationTime <= DateTime.Now).Select(t => t.Key).ToArray();
             lock (lockObj)
@@ -127,7 +148,7 @@ namespace Talk.Cache
         public long GetNum()
         {
             //获取缓存对象
-            var data = easy.GetData();
+            var data = easy.GetCache();
             if (data == null)
             {
                 data = new CacheData<long>() { Data = 0 };

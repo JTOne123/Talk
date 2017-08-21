@@ -13,7 +13,7 @@ namespace Talk.Cache.Tests
             var time = DateTime.Now.AddMilliseconds(60) - DateTime.Now;
             EasyCache<string> str = new EasyCache<string>("k", time);
             str.AddData("aaa");
-            Assert.Equal(str.GetData()?.Data, "aaa"); 
+            Assert.Equal(str.GetData(), "aaa"); 
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace Talk.Cache.Tests
             var time = DateTime.Now.AddMilliseconds(60) - DateTime.Now;
             EasyCache<Order> obj = new EasyCache<Order>("k", time);
             obj.AddData(new Order() { Code = "123" });
-            Assert.Equal(obj.GetData()?.Data.Code, "123");
+            Assert.Equal(obj.GetData()?.Code, "123");
         }
 
         [Fact]
