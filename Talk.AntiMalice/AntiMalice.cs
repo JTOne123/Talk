@@ -23,7 +23,7 @@ namespace Talk.AntiMalice
             var antimaliceValue = httpContext.Request.Cookies.FirstOrDefault(t => t.Key == key).Value;
             if (string.IsNullOrWhiteSpace(antimaliceValue))//如果没有cookie
             {
-                var value = "Talke|" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                var value = "Talke|" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "|" + Guid.NewGuid();
                 value = value.DES3Encrypt(key);
                 httpContext.Response.Cookies.Append(key, value);
             }
@@ -79,6 +79,6 @@ namespace Talk.AntiMalice
                 }
             }
             return antiMaliceToken;
-        } 
+        }
     }
 }
