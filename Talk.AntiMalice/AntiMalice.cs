@@ -60,19 +60,19 @@ namespace Talk.AntiMalice
             {
                 antiMaliceToken.Type = 0;
                 httpContext.SetToken();
-                if (num >= nsecond)//一定时间内不能超过多少次                
+                if (num > nsecond)//一定时间内不能超过多少次                
                     antiMaliceToken.IsOk = false;
             }
             else
             {
                 antiMaliceToken.Type = 1;
-                if (executeNum.GetNum() > usecond)//有标记也不能频繁操作                
+                if (num > usecond)//有标记也不能频繁操作                
                     antiMaliceToken.IsOk = false;
                 else
                 {
                     var valueString = antimaliceValue.DES3Decrypt(key);
                     var values = valueString.Split('|');
-                    if (values.Length != 2 || values[0] != "Talke")
+                    if (values.Length != 3 || values[0] != "Talke")
                         antiMaliceToken.IsOk = false;
                     else if (DateTime.Parse(values[1]).AddMinutes(2) <= DateTime.Now)//清除2分钟前的标记                
                         httpContext.Response.Cookies.Delete(key);
