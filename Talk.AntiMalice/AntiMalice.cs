@@ -76,6 +76,11 @@ namespace Talk.AntiMalice
                         antiMaliceToken.IsOk = false;
                     else if (DateTime.Parse(values[1]).AddMinutes(2) <= DateTime.Now)//清除2分钟前的标记                
                         httpContext.Response.Cookies.Delete(key);
+                    else
+                    {
+                        httpContext.Response.Cookies.Delete(key);
+                        antiMaliceToken.IsOk = false;
+                    }
                 }
             }
             return antiMaliceToken;
