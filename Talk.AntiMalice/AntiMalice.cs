@@ -72,15 +72,13 @@ namespace Talk.AntiMalice
                 {
                     var valueString = antimaliceValue.DES3Decrypt(key);
                     var values = valueString.Split('|');
-                    if (values.Length != 3 || values[0] != "Talke")
+                    if (values.Length <= 1 || values[0] != "Talke")
+                    {
                         antiMaliceToken.IsOk = false;
+                        //httpContext.Response.Cookies.Delete(key);// 兼容 value 的修改
+                    }
                     else if (DateTime.Parse(values[1]).AddMinutes(2) <= DateTime.Now)//清除2分钟前的标记                
                         httpContext.Response.Cookies.Delete(key);
-                    else
-                    {
-                        httpContext.Response.Cookies.Delete(key);
-                        antiMaliceToken.IsOk = false;
-                    }
                 }
             }
             return antiMaliceToken;
