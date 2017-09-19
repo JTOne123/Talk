@@ -34,3 +34,10 @@
 /.vs
 /Talk.AntiMalice/obj
 /Talk.AntiMalice/bin
+/Talk.Mail.Tests/*
+/Talk.Mail/bin
+/Talk.Mail/obj
+/Talk.OAuthClient.Tests/obj
+/Talk.OAuthClient.Tests/bin
+/Talk.OAuthClient/bin
+/Talk.OAuthClient/obj
