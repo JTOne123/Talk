@@ -21,9 +21,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talk.Cache.Tests", "Talk.Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Talk.AntiMalice", "Talk.AntiMalice\Talk.AntiMalice.csproj", "{2D42CDF8-6026-4536-BC18-206183112234}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talk.OAuthClient", "Talk.OAuthClient\Talk.OAuthClient.csproj", "{20CE5B60-69A5-435E-B69C-AEF919DF4412}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Talk.OAuthClient", "Talk.OAuthClient\Talk.OAuthClient.csproj", "{20CE5B60-69A5-435E-B69C-AEF919DF4412}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talk.OAuthClient.Tests", "Talk.OAuthClient.Tests\Talk.OAuthClient.Tests.csproj", "{1425C0D9-F147-4B61-9E20-7373494ED399}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Talk.OAuthClient.Tests", "Talk.OAuthClient.Tests\Talk.OAuthClient.Tests.csproj", "{1425C0D9-F147-4B61-9E20-7373494ED399}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talk.Redis", "Talk.Redis\Talk.Redis.csproj", "{1093B77B-CAC0-4C58-9B04-C5C3780ABC79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talk.Redis.Tests", "Talk.Redis.Tests\Talk.Redis.Tests.csproj", "{42AF4007-A9A6-409D-945F-C232EA157947}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +75,14 @@ Global
 		{1425C0D9-F147-4B61-9E20-7373494ED399}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1425C0D9-F147-4B61-9E20-7373494ED399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1425C0D9-F147-4B61-9E20-7373494ED399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1093B77B-CAC0-4C58-9B04-C5C3780ABC79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1093B77B-CAC0-4C58-9B04-C5C3780ABC79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1093B77B-CAC0-4C58-9B04-C5C3780ABC79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1093B77B-CAC0-4C58-9B04-C5C3780ABC79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42AF4007-A9A6-409D-945F-C232EA157947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42AF4007-A9A6-409D-945F-C232EA157947}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42AF4007-A9A6-409D-945F-C232EA157947}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42AF4007-A9A6-409D-945F-C232EA157947}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +91,7 @@ Global
 		{D8DAEF0D-55CE-4AB9-9FD7-B3F85575D1BE} = {E89920F0-6221-48A7-9E1C-F9B52A1D91D3}
 		{A6E27EAD-BEE0-42DC-9DD3-6F1A14A6E0E2} = {E89920F0-6221-48A7-9E1C-F9B52A1D91D3}
 		{1425C0D9-F147-4B61-9E20-7373494ED399} = {E89920F0-6221-48A7-9E1C-F9B52A1D91D3}
+		{42AF4007-A9A6-409D-945F-C232EA157947} = {E89920F0-6221-48A7-9E1C-F9B52A1D91D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {401B7A10-6429-46EE-9B90-B13E416835E9}

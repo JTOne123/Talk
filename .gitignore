@@ -41,3 +41,7 @@
 /Talk.OAuthClient.Tests/bin
 /Talk.OAuthClient/bin
 /Talk.OAuthClient/obj
+/Talk.Redis.Tests/obj
+/Talk.Redis.Tests/bin
+/Talk.Redis/bin
+/Talk.Redis/obj
