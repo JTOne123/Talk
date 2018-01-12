@@ -76,12 +76,12 @@ namespace Talk.NPOI.Tests
         [Fact]
         public void 多个Shett读取成多个Table再分别写入Excel()
         {
-            var tableList = NPOIHelper.GetDataTables(basePath + "赛嘉全航线_Test.xlsx");
+            var tableList = NPOIHelper.GetDataTables(basePath + "空运模板2.xls");
             var i = 0;
             foreach (var table in tableList)
             {
                 if (table != null)
-                    NPOIHelper.DataTableToExcel(table, basePath + @"Temp\赛嘉全航线_Test" + i++ + ".xlsx");
+                    NPOIHelper.DataTableToExcel(table, basePath + @"Temp\空运模板2" + i++ + ".xlsx");
             }
         }
 
@@ -97,9 +97,9 @@ namespace Talk.NPOI.Tests
                  new Point(1,5),
                  new Point(1,6),
             };
-            var table = NPOIHelper.GetDataTable(basePath + "赛嘉全航线_Test.xlsx", list, 3, 1);
+            var table = NPOIHelper.GetDataTable(basePath + "空运模板2.xls", list, 3, 1);
 
-            NPOIHelper.DataTableToExcel(table, basePath + @"Temp\赛嘉全航线_Test.xlsx");
+            NPOIHelper.DataTableToExcel(table, basePath + @"Temp\空运模板2.xlsx");
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace Talk.NPOI.Tests
                 { 10,"斯蒂芬斯蒂芬第三方斯蒂芬企鹅温热万人vqwreqwerewqvbewreyvrtybw"},
             };
 
-            NPOIHelper.SaveExcel(basePath + "赛嘉全航线_Test.xlsx", filePath, 1, 14, dic);
+            NPOIHelper.SaveExcel(basePath + "空运模板2.xls", filePath, 1, 14, dic);
         }
 
         public class AirEntity
