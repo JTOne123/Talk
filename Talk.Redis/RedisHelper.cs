@@ -34,7 +34,7 @@ namespace Talk.Redis
         }
 
         public RedisHelper(int dbIndex)
-          : this(dbIndex, ConfigurationConstant.RedisConnectionString)
+          : this(dbIndex, null)
         {
         }
 
