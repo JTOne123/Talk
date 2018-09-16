@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace Talk.NPOI
 {
@@ -21,7 +23,7 @@ namespace Talk.NPOI
             }
         }
 
-        public static IWorkbook GetWorkbook(FileStream stream, bool isOldThan2007)
+        public static IWorkbook GetWorkbook(Stream stream, bool isOldThan2007)
         {
             if (isOldThan2007)
                 return new HSSFWorkbook(stream);
@@ -31,6 +33,11 @@ namespace Talk.NPOI
 
         }
 
+        public static IWorkbook GetWorkbook(Stream stream, string fileName)
+        {
+            var isOldThan2007 = Path.GetExtension(fileName) == ".xls";
+            return GetWorkbook(stream, isOldThan2007);
+        }
         #region 读取Excel
 
         public static DataTable GetDataTable(string filePath, int sheetIndex)
@@ -100,6 +107,96 @@ namespace Talk.NPOI
                 bool isOldThan2007 = Path.GetExtension(filePath) == ".xls";
                 return GetDataTables(stream, isOldThan2007);
             }
+        }
+
+        /// <summary>
+        /// Excel转泛型T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
+        /// <param name="sheetIndex"></param>
+        /// <returns></returns>
+        public static List<T> ToEntitys<T>(string path, int sheetIndex = 0) where T : class, new()
+        {
+            List<T> list = new List<T>();
+            IWorkbook book = GetWorkbook(path);
+            return ToEntitys<T>(book, sheetIndex);
+        }
+
+        /// <summary>
+        /// Excel转泛型T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="stream"></param>
+        /// <param name="fileName"></param>
+        /// <param name="sheetIndex"></param>
+        /// <returns></returns>
+        public static List<T> ToEntitys<T>(Stream stream, string fileName, int sheetIndex = 0) where T : class, new()
+        {
+            bool isOldThan2007 = Path.GetExtension(fileName) == ".xls";
+            List<T> list = new List<T>();
+            IWorkbook book = GetWorkbook(stream, isOldThan2007);
+            return ToEntitys<T>(book, sheetIndex);
+        }
+
+        /// <summary>
+        /// Excel转泛型T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="book"></param>
+        /// <param name="sheetIndex"></param>
+        /// <returns></returns>
+        public static List<T> ToEntitys<T>(IWorkbook book, int sheetIndex = 0) where T : class, new()
+        {
+            List<T> list = new List<T>();
+            ISheet sheet = book.GetSheetAt(sheetIndex);
+            IRow row = sheet.GetRow(0);
+            if (row == null) return list;
+
+            int firstCellNum = row.FirstCellNum;
+            int lastCellNum = row.LastCellNum;
+
+            if (firstCellNum == lastCellNum) return list;
+
+            //记录列号与属性名称对应关系 
+            Dictionary<int, PropertyInfo> dictionary = new Dictionary<int, PropertyInfo>();
+            var pros = typeof(T).GetProperties();
+            for (int i = firstCellNum; i < lastCellNum; i++)
+            {
+                string name = row.GetCell(i).StringCellValue;
+                foreach (var p in pros)
+                {
+                    string alias = AliasAttribute<T>(p);
+                    if ((!string.IsNullOrEmpty(alias)) && name == alias)
+                    {
+                        dictionary.Add(i, p);
+                        break;
+                    }
+                }
+            }
+
+            int blankRowNum = 0; //连续空白行数
+            for (int i = 1; i <= sheet.LastRowNum; i++)
+            {
+                T t = new T();
+                row = sheet.GetRow(i);
+                if (row?.ZeroHeight ?? false)//判断是否为隐藏行
+                    continue;
+                if (row == null || IsBlankRow(row, dictionary.Count))//判断空行
+                {
+                    blankRowNum++;
+                    if (blankRowNum >= 5)//连续5行为空行的情况，将不再向下进行读取
+                        break;
+                    continue;
+                }
+                blankRowNum = 0;
+                foreach (var info in dictionary)
+                {
+                    SetValue(row.GetCell(info.Key), info.Value, t);
+                }
+                list.Add(t);
+            }
+            return list;
         }
         #endregion
 
@@ -213,6 +310,114 @@ namespace Talk.NPOI
         #endregion
 
         #region private
+        private static string AliasAttribute<T>(PropertyInfo p) where T : new()
+        {
+            var attributes = p.GetCustomAttributes(typeof(AliasAttribute), false);
+            AliasAttribute type = null;
+            foreach (var o in attributes)
+            {
+                if (o is AliasAttribute)
+                {
+                    type = o as AliasAttribute;
+                }
+            }
+            return type?.Alias;
+        }
+
+        /// <summary>
+        /// 判斷是否空白行
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="cellNum"></param>
+        /// <returns></returns>
+        private static bool IsBlankRow(IRow row, int cellNum)
+        {
+            var blankCellCount = 0;
+            for (int i = 0; i < cellNum; i++)
+            {
+                if (row.GetCell(i) == null|| string.IsNullOrWhiteSpace(row.GetValue(i)))
+                {
+                    blankCellCount++;
+                }
+            }
+            return blankCellCount == cellNum;
+        }
+        /// <summary>
+        /// 读Excel单元格的数据
+        /// </summary>
+        /// <param name="cell">Excel单元格</param>
+        /// <param name="type">列数据类型</param>
+        /// <param name="obj"></param>
+        /// <returns>object 单元格数据</returns>
+        private static void SetValue(ICell cell, PropertyInfo type, object obj)
+        {
+            if (cell == null) return;
+
+            object cellValue = NPOIExtensions.GetValueByCellStyle(cell, cell?.CellType);
+
+            string dataType = type.PropertyType.FullName;
+
+            if (dataType == "System.String")
+            {
+                //  cellValue == type(double)，会有异常
+                type.SetValue(obj, cellValue?.ToString().Trim(), null);
+            }
+            else if (dataType == "System.DateTime")
+            {
+                DateTime pdt = Convert.ToDateTime(cellValue);
+                type.SetValue(obj, pdt, null);
+            }
+            else if (dataType?.Contains("System.DateTime") == true)
+            {
+                DateTime? pdt;
+                if (string.IsNullOrWhiteSpace(cellValue?.ToString()))
+                    pdt = null;
+                else
+                    pdt = Convert.ToDateTime(cellValue);
+                type.SetValue(obj, pdt, null);
+            }
+            else if (dataType == "System.Boolean")
+            {
+                bool pb = Convert.ToBoolean(cellValue);
+                type.SetValue(obj, pb, null);
+            }
+            else if (dataType == "System.Int16")
+            {
+                Int16 pi16 = Convert.ToInt16(cellValue);
+                type.SetValue(obj, pi16, null);
+            }
+            else if (dataType == "System.Int32")
+            {
+                Int32 pi32 = Convert.ToInt32(cellValue);
+                type.SetValue(obj, pi32, null);
+            }
+            else if (dataType == "System.Int64")
+            {
+                Int64 pi64 = Convert.ToInt64(cellValue);
+                type.SetValue(obj, pi64, null);
+            }
+            else if (dataType == "System.Byte")
+            {
+                Byte pb = Convert.ToByte(cellValue);
+                type.SetValue(obj, pb, null);
+            }
+            else if (dataType == "System.Decimal")
+            {
+                System.Decimal pd = Convert.ToDecimal(cellValue);
+                type.SetValue(obj, pd, null);
+            }
+            else if (dataType == "System.Double")
+            {
+                double pd = Convert.ToDouble(cellValue);
+                type.SetValue(obj, pd, null);
+            }
+            else
+            {
+                type.SetValue(obj, null, null);
+            }
+
+        }
+
         /// <summary>
         /// Excel转成DataTable
         /// </summary>
@@ -418,6 +623,69 @@ namespace Talk.NPOI
         }
 
         /// <summary>
+        /// 根据单元格的类型获取单元格的值
+        /// </summary>
+        /// <param name="rowCell"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static string GetValueByCellStyle(ICell rowCell, CellType? type)
+        {
+            string value = null;
+            switch (type)
+            {
+                case CellType.String:
+                    value = rowCell.StringCellValue;
+                    break;
+                case CellType.Numeric:
+                    if (DateUtil.IsCellInternalDateFormatted(rowCell))
+                    {
+                        value = DateTime.FromOADate(rowCell.NumericCellValue).ToString();
+                    }
+                    else if (DateUtil.IsCellDateFormatted(rowCell))
+                    {
+                        value = DateTime.FromOADate(rowCell.NumericCellValue).ToString();
+                    }
+                    //有些情况，时间搓？数字格式化显示为时间,不属于上面两种时间格式
+                    else if (rowCell.CellStyle.GetDataFormatString() == null)
+                    {
+                        value = DateTime.FromOADate(rowCell.NumericCellValue).ToString();
+                    }
+                    else if (rowCell.CellStyle.GetDataFormatString().Contains("$"))
+                    {
+                        value = "$" + rowCell.NumericCellValue.ToString();
+                    }
+                    else if (rowCell.CellStyle.GetDataFormatString().Contains("￥"))
+                    {
+                        value = "￥" + rowCell.NumericCellValue.ToString();
+                    }
+                    else if (rowCell.CellStyle.GetDataFormatString().Contains("¥"))
+                    {
+                        value = "¥" + rowCell.NumericCellValue.ToString();
+                    }
+                    else if (rowCell.CellStyle.GetDataFormatString().Contains("€"))
+                    {
+                        value = "€" + rowCell.NumericCellValue.ToString();
+                    }
+                    else
+                    {
+                        value = rowCell.NumericCellValue.ToString();
+                    }
+                    break;
+                case CellType.Boolean:
+                    value = rowCell.BooleanCellValue.ToString();
+                    break;
+                case CellType.Error:
+                    value = ErrorEval.GetText(rowCell.ErrorCellValue);
+                    break;
+                case CellType.Formula:
+                    //  TODO: 是否存在 嵌套 公式类型
+                    value = GetValueByCellStyle(rowCell, rowCell?.CachedFormulaResultType);
+                    break;
+            }
+            return value;
+        }
+
+        /// <summary>
         /// 把DataTable数据写入Workbook
         /// </summary>
         /// <param name="dataTable"></param>
@@ -445,6 +713,86 @@ namespace Talk.NPOI
             }
 
             return book;
+        }
+
+        /// <summary>
+        /// list数据转换datatable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sourceList"></param>
+        /// <returns></returns>
+        public static DataTable ToDatatableFromList<T>(this List<T> sourceList) where T : new()
+        {
+            if (sourceList == null || !sourceList.Any()) { return null; }
+            var pros = typeof(T).GetProperties();
+            DataTable targetTable = new DataTable();
+            var propertyInfoList = new List<PropertyInfo>();
+            foreach (var p in pros)
+            {
+                string alias = AliasAttribute<T>(p);
+                if ((!string.IsNullOrEmpty(alias)))
+                {
+                    targetTable.Columns.Add(alias);
+                    propertyInfoList.Add(p);
+                }
+            }
+            object[] values = new object[targetTable.Columns.Count];
+            foreach (T item in sourceList)
+            {
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = propertyInfoList[i].GetValue(item);
+                }
+                targetTable.Rows.Add(values);
+            }
+            return targetTable;
+        }
+
+        /// <summary>
+        /// 把DataTable数据写入Workbook
+        /// </summary>
+        /// <param name="dataTables"></param>
+        /// <param name="isOldThan2007"></param>
+        /// <returns></returns>
+        public static IWorkbook ToWorkbook(this List<DataTable> dataTables, bool isOldThan2007)
+        {
+            IWorkbook book = isOldThan2007 ? new HSSFWorkbook() : (IWorkbook)new XSSFWorkbook();
+            foreach (var dataTable in dataTables)
+            {
+                if (dataTable == null)
+                    continue;
+                ISheet sheet = book.CreateSheet(dataTable.TableName);
+                IRow headerRow = sheet.CreateRow(0);
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    headerRow.CreateCell(column.Ordinal).SetCellValue(column.ColumnName);
+                }
+
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    DataRow row = dataTable.Rows[i];
+                    IRow dataRow = sheet.CreateRow(i + 1);
+                    for (int j = 0; j < dataTable.Columns.Count; j++)
+                    {
+                        dataRow.CreateCell(j).SetCellValue(row[j]?.ToString());
+                    }
+                }
+            }
+            return book;
+        }
+
+        private static string AliasAttribute<T>(PropertyInfo p) where T : new()
+        {
+            var attributes = p.GetCustomAttributes(typeof(AliasAttribute), false);
+            AliasAttribute type = null;
+            foreach (var o in attributes)
+            {
+                if (o is AliasAttribute)
+                {
+                    type = o as AliasAttribute;
+                }
+            }
+            return type?.Alias;
         }
     }
 
@@ -514,6 +862,24 @@ namespace Talk.NPOI
                 table.Rows.Add(row);
             }
             return table;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class AliasAttribute : Attribute
+    {
+        /// <summary>
+        /// 属性别名
+        /// </summary>
+        public string Alias { get; }
+
+        /// <summary>
+        /// 构造方法
+        /// </summary>
+        /// <param name="alias">别名</param>
+        public AliasAttribute(string alias)
+        {
+            Alias = alias;
         }
     }
 }
