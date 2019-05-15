@@ -13,11 +13,19 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\Users\benny\Documents\Code\gitee\Talk\Talk.Linq.Extensions\Talk.Linq.Extensions.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>D:\Users\benny\Documents\Code\gitee\Talk\Talk.Linq.Extensions\Talk.Linq.Extensions.xml</DocumentationFile>
+  </PropertyGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.8.18" />
-    <PackageReference Include="Talk.AutoMap.Extensions" Version="1.0.2.6-pre" />
+    <PackageReference Include="Talk.AutoMap.Extensions" Version="1.0.2.9" />
   </ItemGroup>
 
 </Project>
