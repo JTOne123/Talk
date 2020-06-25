@@ -10,7 +10,15 @@
     <Version>1.0.1.2</Version>
     <Copyright>Copyright (c) 2018 Talk.  All rights reserved.</Copyright>
     <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>D:\Users\benny\Documents\Code\gitee\Talk\Talk.NPOI\Talk.NPOI.xml</DocumentationFile>
   </PropertyGroup>
